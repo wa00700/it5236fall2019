@@ -27,13 +27,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$complete = 0;
 	}
 
+	if (empty($_POST['finBy'])) {
+		$finBy = null;
+	} else {
+		$finBy = $_POST['finBy'];
+	}
+
 	if (!$dbconnecterror) {
 		try {
 			$sql = "INSERT INTO doList (complete, listItem, finishDate) VALUES (:complete, :listItem, :finishDate)";
 			$stmt = $dbh->prepare($sql);			
 			$stmt->bindParam(":complete", $complete);
 			$stmt->bindParam(":listItem", $_POST['listItem']);
-			$stmt->bindParam(":finishDate", $_POST['finBy']);
+			$stmt->bindParam(":finishDate", $finBy);
 			$response = $stmt->execute();	
 			
 			header("Location: index.php");

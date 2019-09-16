@@ -31,8 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	} else {
 		$complete = 0;
 	}
+	if (empty($_POST['finBy'])) {
+		$finBy = null;
+	} else {
+		$finBy = $_POST['finBy'];
+	}
 	$listItem = $_POST['listItem'];
-	$finishDate = $_POST['finBy'];
 	
 
 	if (!$dbconnecterror) {
@@ -41,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 			$stmt = $dbh->prepare($sql);			
 			$stmt->bindParam(":complete", $complete);
 			$stmt->bindParam(":listItem", $listItem);
-			$stmt->bindParam(":finishDate", $finishDate);
+			$stmt->bindParam(":finishDate", $finBy);
 			$stmt->bindParam(":listID", $listID);
 
 			$response = $stmt->execute();	
@@ -56,6 +60,4 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		header("Location: index.php?error=edit");
 	}
 }
-
-
 ?>
